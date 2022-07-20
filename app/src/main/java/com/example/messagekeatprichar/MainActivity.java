@@ -1,5 +1,9 @@
 package com.example.messagekeatprichar;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,13 +67,31 @@ public class MainActivity extends AppCompatActivity {
     private void btnSendListenerMethod() {
         Intent intent = new Intent(this, MessageActivity.class);
         Button btnSend = findViewById((R.id.btnSend));
+
+        ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == RESULT_OK) {
+                            Intent outIntent = result.getData();
+                            boolean good = outIntent.getBooleanExtra(MessageActivity.EXTRA_RESULT, false);
+                            if (good) {
+                                Toast.makeText(MainActivity.this, "This is a good message", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(MainActivity.this, "This is a bad message", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+
+
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText etMessage = findViewById(R.id.etMessage);
                 String message = etMessage.getText().toString();
                 intent.putExtra(MessageActivity.EXTRA_MESSAGE, message);
-                startActivity(intent);
+                launcher.launch(intent);
             }
         });
     }
