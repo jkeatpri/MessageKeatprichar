@@ -3,10 +3,12 @@ package com.example.messagekeatprichar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +18,45 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnSendListenerMethod();
+        btnCallListenerMethod();
+        btnMapListenerMethod();
+        btnWebListenerMethod();
+    }
+
+    private void btnWebListenerMethod() {
+        ImageButton btnWeb = findViewById(R.id.btnWeb);
+        Uri webpage = Uri.parse("https://www.deviantart.com/jkeatprichar7/art/Air-Canada-Boeing-747-100-Flying-to-and-from-920722758");
+        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+        btnWeb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void btnMapListenerMethod() {
+        ImageButton btnMap = findViewById(R.id.btnMap);
+        Uri map = Uri.parse("geo:0,0?q=New+South+Wales");
+        Intent intent = new Intent(Intent.ACTION_VIEW, map);
+        btnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void btnCallListenerMethod() {
+        ImageButton btnCall = findViewById(R.id.btnCall);
+        Uri number = Uri.parse("tel:09667357235");
+        Intent intent = new Intent(Intent.ACTION_DIAL, number);
+        btnCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(intent);
+            }
+        });
     }
 
     private void btnSendListenerMethod() {
